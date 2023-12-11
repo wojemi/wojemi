@@ -1,0 +1,77 @@
+CREATE DATABASE ECommerce;
+USE ECommerce;
+
+CREATE TABLE products
+(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_name VARCHAR(250),
+  price DOUBLE(5, 2),
+  available INT
+);
+
+CREATE TABLE customers
+(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(250),
+  last_name VARCHAR(250),
+  email VARCHAR(250),
+  phone INT
+);
+
+CREATE TABLE basket
+(
+  orders_id INT,
+  products_id INT,
+  FOREIGN KEY (orders_id) REFERENCES orders(id),
+  FOREIGN KEY (products_id) REFERENCES products(id)
+);
+
+INSERT INTO products VALUES(1, 'product1', 23.50, 4),
+                           (2, 'product2', 24.29, 6),
+                           (3, 'product3', 26.26, 10),
+                           (4, 'product4', 39.30, 8),
+                           (5, 'product5', 42.50, 12),
+                           (6, 'product6', 55.55, 15),
+                           (7, 'product7', 23.15, 6),
+                           (8, 'product8', 19.29, 9),
+                           (9, 'product9', 9.99, 10),
+                           (10, 'product10', 10.99, 11);
+
+SELECT * FROM products;
+
+INSERT INTO customers VALUES(1, 'name1', 'last_name1', 'name1@gmail.com', 123456789),
+							              (2, 'name2', 'last_name2', 'name2@gmail.com', 123654789),
+                            (3, 'name3', 'last_name3', 'name3@gmail.com', 321456789),
+                            (4, 'name4', 'last_name4', 'name4@gmail.com', 123456987),
+                            (5, 'name5', 'last_name5', 'name5@gmail.com', 321654789),
+                            (6, 'name6', 'last_name6', 'name6@gmail.com', 321654987);
+
+SELECT * FROM customers;
+SELECT * FROM orders;
+
+INSERT INTO basket VALUES(1, 2),
+						             (2, 4),
+                         (3, 5),
+                         (4, 10),
+                         (5, 6),
+                         (6, 4),
+                         (7, 8),
+                         (8, 9),
+                         (9, 3),
+                         (10, 7);
+
+SELECT * FROM basket;
+
+SELECT 
+	  customers.first_name,
+    customers.last_name,
+    orders.id,
+    orders.order_date,
+    basket.products_id
+FROM customers
+INNER JOIN orders
+ON customers.id = orders.customers_id
+INNER JOIN basket
+ON orders.id = basket.orders_id
+ORDER BY orders.id ASC;
+
